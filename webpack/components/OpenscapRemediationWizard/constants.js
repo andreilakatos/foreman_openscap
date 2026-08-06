@@ -15,6 +15,9 @@ export const JOB_INVOCATION_API_REQUEST_KEY = 'OPENSCAP_REX_JOB_INVOCATIONS';
 export const SNIPPET_SH = 'urn:xccdf:fix:script:sh';
 export const SNIPPET_ANSIBLE = 'urn:xccdf:fix:script:ansible';
 
+export const TOOLTIP_COPIED_EXIT_DELAY_MS = 1500;
+export const TOOLTIP_DEFAULT_EXIT_DELAY_MS = 600;
+
 export const WIZARD_TITLES = {
   snippetSelect: __('Select snippet'),
   reviewHosts: __('Review hosts'),

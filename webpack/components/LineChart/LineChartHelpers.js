@@ -1,5 +1,17 @@
 /** Backend sends [label, values, color]; legacy Foreman charts used spread columns. */
 import { chart_color_black_500 as chartColorBlack500 } from '@patternfly/react-tokens';
+import {
+  MS_PER_SECOND,
+  SECONDS_PER_MINUTE,
+  MINUTES_PER_HOUR,
+  HOURS_PER_HALF_DAY,
+} from 'foremanReact/constants';
+
+const TIMESTAMP_THRESHOLD = 1e12;
+const DEFAULT_TICK_MID = 0.5;
+const MIN_TICK_STEP = 0.1;
+const EXPONENTIAL_THRESHOLD = 1e21;
+const CLAMP_SCALE_FACTOR = 0.9;
 
 const getColumnValues = col => {
   if (Array.isArray(col[1])) return col[1];
@@ -32,7 +44,7 @@ const getSeriesColor = col => {
 
 const toMs = val => {
   const n = Number(val);
-  return n >= 1e12 ? n : n * 1000;
+  return n >= TIMESTAMP_THRESHOLD ? n : n * MS_PER_SECOND;
 };
 
 /** Process raw backend data into chart series for PatternFly line charts. */
@@ -101,9 +113,9 @@ export const getYTickValues = (chartData, hiddenSeries = new Set()) => {
       });
     });
 
-  if (maxY <= 0) return [0, 0.5, 1.0];
+  if (maxY <= 0) return [0, DEFAULT_TICK_MID, 1.0];
 
-  const step = Math.max(0.1, Math.ceil((maxY / 4) * 10) / 10);
+  const step = Math.max(MIN_TICK_STEP, Math.ceil((maxY / 4) * 10) / 10);
   return [0, 1, 2, 3, 4, 5].map(i => Math.round(i * step * 10) / 10);
 };
 
@@ -111,7 +123,7 @@ export const getYTickValues = (chartData, hiddenSeries = new Set()) => {
 export const formatTooltipValue = value => {
   const num = Number(value);
   if (!Number.isFinite(num)) return '';
-  if (Math.abs(num) >= 1e21) {
+  if (Math.abs(num) >= EXPONENTIAL_THRESHOLD) {
     return num.toExponential(1);
   }
   return String(Math.round(num));
@@ -128,14 +140,14 @@ export const clampChartPadding = (padding, width, height) => {
 
   const horizontalTotal = left + right;
   if (horizontalTotal >= width) {
-    const scale = (width * 0.9) / horizontalTotal;
+    const scale = (width * CLAMP_SCALE_FACTOR) / horizontalTotal;
     left *= scale;
     right *= scale;
   }
 
   const verticalTotal = top + bottom;
   if (verticalTotal >= height) {
-    const scale = (height * 0.9) / verticalTotal;
+    const scale = (height * CLAMP_SCALE_FACTOR) / verticalTotal;
     top *= scale;
     bottom *= scale;
   }
@@ -154,7 +166,11 @@ export const getTimeseriesXDomain = chartData => {
   const max = Math.max(...times);
 
   if (min === max) {
-    const offset = 12 * 60 * 60 * 1000;
+    const offset =
+      HOURS_PER_HALF_DAY *
+      MINUTES_PER_HOUR *
+      SECONDS_PER_MINUTE *
+      MS_PER_SECOND;
     return [new Date(min - offset), new Date(max + offset)];
   }
 

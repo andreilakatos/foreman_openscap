@@ -24,7 +24,11 @@ import {
 import OpenscapRemediationWizardContext from '../OpenscapRemediationWizardContext';
 import WizardHeader from '../WizardHeader';
 import ViewSelectedHostsLink from '../ViewSelectedHostsLink';
-import { FAIL_RULE_SEARCH } from '../constants';
+import {
+  FAIL_RULE_SEARCH,
+  TOOLTIP_COPIED_EXIT_DELAY_MS,
+  TOOLTIP_DEFAULT_EXIT_DELAY_MS,
+} from '../constants';
 import { findFixBySnippet } from '../helpers';
 
 import './ReviewRemediation.scss';
@@ -78,7 +82,11 @@ const ReviewRemediation = () => {
           textId="code-content"
           aria-label="Copy to clipboard"
           onClick={e => onCopyClick(e, snippetText)}
-          exitDelay={copied ? 1500 : 600}
+          exitDelay={
+            copied
+              ? TOOLTIP_COPIED_EXIT_DELAY_MS
+              : TOOLTIP_DEFAULT_EXIT_DELAY_MS
+          }
           maxWidth="110px"
           variant="plain"
           onTooltipHidden={() => setCopied(false)}

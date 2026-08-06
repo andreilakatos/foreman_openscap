@@ -18,6 +18,8 @@ import WizardHeader from '../WizardHeader';
 import EmptyState from '../../EmptyState';
 import { errorMsg, supportedRemediationSnippets } from '../helpers';
 
+const URN_TAIL_SEGMENTS = -2;
+
 const SnippetSelect = () => {
   const {
     fixes,
@@ -44,7 +46,7 @@ const SnippetSelect = () => {
     if (mapped) return mapped;
 
     return join(
-      map(slice(split(system, ':'), -2), n => capitalize(n)),
+      map(slice(split(system, ':'), URN_TAIL_SEGMENTS), n => capitalize(n)),
       ' '
     );
   };

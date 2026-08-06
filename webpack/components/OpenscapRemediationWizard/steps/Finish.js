@@ -6,7 +6,7 @@ import { ExternalLinkSquareAltIcon } from '@patternfly/react-icons';
 
 import { translate as __ } from 'foremanReact/common/I18n';
 import { foremanUrl } from 'foremanReact/common/helpers';
-import { STATUS } from 'foremanReact/constants';
+import { STATUS, HTTP_STATUS_CODES } from 'foremanReact/constants';
 import { useAPI } from 'foremanReact/common/hooks/API/APIHooks';
 import Loading from 'foremanReact/components/Loading';
 import PermissionDenied from 'foremanReact/components/PermissionDenied';
@@ -91,7 +91,7 @@ const Finish = ({ onClose }) => {
     </Button>
   );
   const errorComponent =
-    statusCode === 403 ? (
+    statusCode === HTTP_STATUS_CODES.FORBIDDEN ? (
       <PermissionDenied
         missingPermissions={data?.error?.missing_permissions}
         primaryButton={closeBtn}
