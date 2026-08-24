@@ -93,7 +93,8 @@ module ForemanOpenscap
                       :resource_type => 'ForemanOpenscap::ScapContent'
             permission :edit_hosts, { :hosts => %i[openscap_proxy_changed
                                                   select_multiple_openscap_proxy
-                                                  update_multiple_openscap_proxy] },
+                                                  update_multiple_openscap_proxy],
+                                      'api/v2/compliance/hosts_bulk_actions' => [:change_openscap_proxy] },
                       :resource_type => "Host"
             permission :view_hosts, { 'api/v2/hosts' => [:policies_enc] }, :resource_type => 'Host'
             permission :edit_hostgroups, { :hostgroups => [:openscap_proxy_changed] }, :resource_type => "Hostgroup"
