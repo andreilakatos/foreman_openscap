@@ -11,14 +11,14 @@ import './RuleSeverity.scss';
 
 const RuleSeverity = props => {
   const propsMapping = {
-    low: { alt: 'Low Serverity', src: SeverityLow },
-    medium: { alt: 'Medium Serverity', src: SeverityMedium },
-    high: { alt: 'High Serverity', src: SeverityHigh },
+    low: { alt: 'Low Severity', src: SeverityLow },
+    medium: { alt: 'Medium Severity', src: SeverityMedium },
+    high: { alt: 'High Severity', src: SeverityHigh },
     critical: {
-      alt: 'Critical Serverity',
+      alt: 'Critical Severity',
       src: SeverityCritical,
     },
-    unknown: { alt: 'Unknown Serverity', src: SeverityUnknown },
+    unknown: { alt: 'Unknown Severity', src: SeverityUnknown },
   };
 
   const imgProps = propsMapping[props.severity] || propsMapping.unknown;
